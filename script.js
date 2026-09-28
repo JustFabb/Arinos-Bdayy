@@ -99,6 +99,10 @@ const messages = [
         text: "HAPPY BIRTHDAY ARINOOOOO! I hope you have a great day today. you're one of the realest person I've ever met, well didnt expect it from reapers dauture. You're really friendly and all your cosplays and artworks look gorgeour. Have funnn todayyy Happy Bdayyy"
     },
     {
+        name: "Tanmay",
+        text: "HAPPYYY BIRTHDAY ARINOOOO ✨💫<br>enjoy your day and have a blast and yea looking forward to meeting you this year dear sister 🫡"
+    },
+    {
         name: "READ ME",
         text: "Sorry, I couldn't do anything better. I was very busy the past few days and very tired as well, I somehow came up with this with maahir's help. Trusttt I am gonna keep improving this site as my personal hobby and make this most perfect shit everrr.",
         special: true

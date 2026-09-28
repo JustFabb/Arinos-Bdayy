@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Text on the start screen -->
+    <div id="start-screen-text">HAPPY BIRTHDAY ARINOOO</div>
+
+    <!-- Phase 1: The Heart -->
+    <div id="heart-container">
+        <svg id="main-heart" viewBox="0 0 32 29.6">
+            <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
+            c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
+        </svg>
+    </div>
+
+    <!-- The HeartyHeart Background (hidden initially) -->
+    <canvas id="heartCanvas" class="hidden"></canvas>
+
+    <!-- Phase 2: Falling Hearts Container -->
+    <div id="falling-hearts-container"></div>
+
+    <!-- Phase 3: The Letters Container -->
+    <div id="letters-container" class="hidden">
+        <!-- Letters will be generated here by JS -->
+    </div>
+
+    <!-- Popup for reading a letter -->
+    <div id="letter-popup">
+        <div class="popup-content">
+            <button id="close-popup">&times;</button>
+            <div id="popup-message"></div>
+            <div id="popup-signature"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

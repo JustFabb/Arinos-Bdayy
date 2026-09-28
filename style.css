@@ -1,0 +1,307 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: black;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 2s ease; /* For the background change later */
+}
+
+.hidden {
+    display: none !important;
+}
+
+#start-screen-text {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffffff;
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 3px;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(255, 42, 42, 0.8), 0 0 20px rgba(255, 42, 42, 0.5);
+    z-index: 10;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    width: 90%;
+}
+
+/* --- Phase 1: Heart --- */
+#heart-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    /* Prevent text selection when tapping fast */
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#main-heart {
+    width: 50px;
+    height: 50px;
+    fill: #ff2a2a;
+    transition: transform 0.1s ease;
+    filter: drop-shadow(0 0 10px rgba(255, 42, 42, 0.5));
+}
+
+.shake {
+    animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* --- Phase 2: Explosions & Falling Hearts --- */
+.particle-heart, .falling-heart {
+    position: absolute;
+    fill: #ff2a2a;
+    pointer-events: none;
+}
+
+@keyframes explode {
+    to {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes fall {
+    from {
+        transform: translateY(-10vh) rotate(var(--rot-start));
+    }
+    to {
+        transform: translateY(110vh) rotate(var(--rot-end));
+    }
+}
+
+@keyframes wipeFall {
+    from {
+        transform: translateY(-50vh) rotate(var(--rot-start));
+    }
+    to {
+        transform: translateY(150vh) rotate(var(--rot-end));
+    }
+}
+
+@keyframes revealBackground {
+    0% { clip-path: inset(0 0 100% 0); }
+    100% { clip-path: inset(0 0 0% 0); }
+}
+
+#falling-hearts-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+#heartCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1; /* behind everything else but in front of black background */
+    pointer-events: none;
+    background-color: #000000;
+    clip-path: inset(0 0 100% 0);
+}
+
+#heartCanvas.reveal {
+    animation: revealBackground 1.5s linear 0.9s forwards;
+}
+
+/* --- Phase 3: Letters --- */
+#letters-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* 0x0 size so child positions are relative exactly to the center of the screen */
+    width: 0;
+    height: 0;
+    z-index: 10;
+}
+
+.letter-wrapper {
+    position: absolute; /* For circular clustering */
+    /* Center the envelope on the coordinate */
+    margin-left: -60px;
+    margin-top: -40px;
+    width: 120px;
+    height: 80px;
+    cursor: pointer;
+    transition: transform 0.2s ease, z-index 0s;
+}
+
+.letter-wrapper:hover {
+    z-index: 100 !important; /* Bring to front on hover */
+    transform: scale(1.1) translateY(-10px);
+}
+
+@keyframes dropIn {
+    from { transform: translateY(-100vh); }
+    to { transform: translateY(0); }
+}
+
+/* Simple CSS Envelope */
+.envelope {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+.envelope::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-style: solid;
+    border-width: 40px 60px 0 60px;
+    border-color: #f0f0f0 transparent transparent transparent;
+    z-index: 2;
+}
+
+.envelope::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-style: solid;
+    border-width: 0 60px 40px 60px;
+    border-color: transparent transparent #e0e0e0 transparent;
+    z-index: 1;
+}
+
+.envelope-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3; /* sit on top of flaps like a seal */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5px; /* push heart slightly above middle */
+}
+
+.envelope-heart {
+    font-size: 16px;
+    color: #ff2a2a;
+    margin-bottom: 2px;
+}
+
+.envelope-name {
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Letter fly away animation */
+.fly-away {
+    animation: flyAway 1s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+    pointer-events: none;
+}
+
+@keyframes flyAway {
+    0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(150vh) scale(0.5) rotate(45deg); opacity: 0; }
+}
+
+/* --- Phase 4: Popup --- */
+#letter-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#letter-popup.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.popup-content {
+    background: #fff;
+    padding: 40px 40px 60px 40px; /* Extra bottom padding for signature */
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    min-height: 300px;
+    position: relative;
+    transform: scale(0.8);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    font-size: 1.1rem; /* Slightly smaller for longer messages */
+    line-height: 1.6;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+#popup-signature {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: italic;
+    font-weight: bold;
+    color: #555;
+    font-size: 1.1rem;
+}
+
+#letter-popup.show .popup-content {
+    transform: scale(1);
+}
+
+#close-popup {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2rem;
+    background: transparent;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+#close-popup:hover {
+    color: #ff2a2a;
+}

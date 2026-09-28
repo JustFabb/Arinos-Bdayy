@@ -103,6 +103,10 @@ const messages = [
         text: "HAPPYYY BIRTHDAY ARINOOOO ✨💫<br>enjoy your day and have a blast and yea looking forward to meeting you this year dear sister 🫡"
     },
     {
+        name: "Reaper",
+        text: "Arino is like one of those Small cute Puppies... \"Chota packet Bada Dhamaka\" type where she just explodes, I'm more afraid of her that she's gonna throw a comically sized giant Rock at my head for Makin fun of her height (or Intelligence) but it's alright her dumbness is what makes her likeable and loveable 😔 Happy Birthday my Dauture :3"
+    },
+    {
         name: "READ ME",
         text: "Sorry, I couldn't do anything better. I was very busy the past few days and very tired as well, I somehow came up with this with maahir's help. Trusttt I am gonna keep improving this site as my personal hobby and make this most perfect shit everrr.",
         special: true

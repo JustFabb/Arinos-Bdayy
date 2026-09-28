@@ -295,27 +295,39 @@ function showLetters() {
             envelope.style.border = '2px solid #ff2a2a';
             envelope.style.boxShadow = '0 0 15px rgba(255, 42, 42, 0.6)';
             
-            // ... (we'll append content below)
             var envRef = envelope; // Keep reference
         } else {
-            // Position them in a dense circular cluster
-            const angle = Math.random() * Math.PI * 2;
-            const maxRadius = Math.min(window.innerWidth * 0.4, 350);
-            const radius = Math.sqrt(Math.random()) * maxRadius; 
-            const offsetX = Math.cos(angle) * radius;
-            const offsetY = Math.sin(angle) * radius;
+            // Distribute standard letters using a Golden Spiral (Fermat's spiral)
+            // This guarantees they are evenly spread out in a beautiful oval pile 
+            // without ever overlapping "too much".
+            
+            const golden_angle = 137.508 * (Math.PI / 180);
+            // Controls how spread apart they are. 35 is a good balance for overlapping cards.
+            const spread = 35; 
+            
+            const angle = index * golden_angle;
+            const radius = spread * Math.sqrt(index);
+            
+            // 1.5 multiplier on X makes the pile an oval (wider than it is tall)
+            // We also add a tiny bit of random jitter so it looks messy
+            const jitterX = (Math.random() - 0.5) * 15;
+            const jitterY = (Math.random() - 0.5) * 15;
+            
+            const offsetX = (Math.cos(angle) * radius * 1.5) + jitterX;
+            // Shift the entire pile UP by 60px to keep it far away from the READ ME letter!
+            const offsetY = (Math.sin(angle) * radius) - 60 + jitterY; 
             
             letterWrap.style.left = `${offsetX}px`;
             letterWrap.style.top = `${offsetY}px`;
             
-            // Give each letter a random Z-index so they overlap naturally in a pile
-            letterWrap.style.zIndex = Math.floor(Math.random() * 50);
+            // Z-index based on index so the spiral layers correctly!
+            letterWrap.style.zIndex = index;
             
             const envelope = document.createElement('div');
             envelope.classList.add('envelope');
             
             // Randomly rotate each envelope to make the pile look messy!
-            const rot = (Math.random() - 0.5) * 60; // between -30 and 30 degrees
+            const rot = (Math.random() - 0.5) * 45; // between -22.5 and 22.5 degrees
             envelope.style.transform = `rotate(${rot}deg)`;
             
             var envRef = envelope;
